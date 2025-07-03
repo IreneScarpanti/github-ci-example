@@ -18,4 +18,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn clean verify
+        run: mvn -f my-project-ci/pom.xml clean verify
