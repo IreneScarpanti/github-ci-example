@@ -13,11 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        include:
-          - java: 17
-            additional-maven-args: "-Pcoveralls"
-          - java: 21
-            additional-maven-args: "-Pcoveralls"
+        java: [17, 21]
 
     name: Build with Java ${{ matrix.java }} on Linux
 
@@ -42,7 +38,7 @@ jobs:
         run: echo "ADDITIONAL_MAVEN_OPTIONS=-Pcoveralls" >> $GITHUB_ENV
 
       - name: Build with Maven
-        run: mvn verify ${{ matrix.additional-maven-args }}
+        run: mvn verify $ADDITIONAL_MAVEN_OPTIONS
         working-directory: ${{ env.workdir }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
@@ -53,7 +49,7 @@ jobs:
         working-directory: ${{ env.workdir }}
 
       - name: Jacoco
-        run: mvn verify ${{ matrix.additional-maven-args }}
+        run: mvn verify $ADDITIONAL_MAVEN_OPTIONS
         working-directory: ${{ env.workdir }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
