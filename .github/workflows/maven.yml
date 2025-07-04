@@ -1,4 +1,4 @@
-name: JavaCIwithMaveninLinux
+name: Java CI with Maven on Linux
 
 on:
   push:
@@ -10,9 +10,9 @@ jobs:
 
     strategy:
       matrix:
-        java: [8, 11]
+        java: [17, 21]
 
-    name: Build with Java ${{ matrix.java }}
+    name: Build with Java ${{ matrix.java }} on Linux
 
     steps:
       - uses: actions/checkout@v2

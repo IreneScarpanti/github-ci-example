@@ -1,0 +1,27 @@
+name: JavaCIwithMavenforPR
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    name: Build with Java 17 on ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn -f my-project-ci/pom.xml clean verify
