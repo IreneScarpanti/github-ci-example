@@ -42,7 +42,7 @@ jobs:
       - name: Generate JUnit Report
         run: mvn -f my-project-ci/pom.xml surefire-report:report-only
         if: ${{ always() }}
-
+		
       - name: Jacoco
         run: mvn -f my-project-ci/pom.xml clean verify ${{ matrix.additional-maven-args }}
         env:
