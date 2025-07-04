@@ -16,7 +16,6 @@
   </properties>
 
   <build>
-    <!-- Facoltativo: definizione globale della versione dei plugin -->
     <pluginManagement>
       <plugins>
         <plugin>
@@ -56,7 +55,6 @@
       <build>
         <plugins>
           <plugin>
-            <!-- Configurato in pluginManagement -->
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
           </plugin>
