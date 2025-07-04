@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       workdir: my-project-ci
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
 
     strategy:
       matrix:
@@ -36,6 +37,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
           restore-keys: ${{ runner.os }}-m2-
 
+      - name: Set Maven Additional Options (Only if secret and Java 17)
+        if: ${{ env.COVERALLS_REPO_TOKEN != '' && matrix.java == 17 }}
+        run: echo "ADDITIONAL_MAVEN_OPTIONS=-Pcoveralls" >> $GITHUB_ENV
+
       - name: Build with Maven
         run: mvn verify ${{ matrix.additional-maven-args }}
         working-directory: ${{ env.workdir }}
@@ -43,9 +48,9 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
 
       - name: Generate JUnit Report
+        if: ${{ always() }}
         run: mvn surefire-report:report-only
         working-directory: ${{ env.workdir }}
-        if: ${{ always() }}
 
       - name: Jacoco
         run: mvn verify ${{ matrix.additional-maven-args }}
