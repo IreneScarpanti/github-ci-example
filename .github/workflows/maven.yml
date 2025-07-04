@@ -10,7 +10,11 @@ jobs:
 
     strategy:
       matrix:
-        java: [17, 21]
+        include:
+          - java: 17
+            additional-maven-args: "-Pjacoco"
+          - java: 21
+            additional-maven-args: ""
 
     name: Build with Java ${{ matrix.java }} on Linux
 
@@ -37,8 +41,11 @@ jobs:
         run: mvn -f my-project-ci/pom.xml surefire-report:report-only
         if: ${{ always() }}
 
+      - name: Jacoco
+        run: mvn -f my-project-ci/pom.xml clean verify ${{ matrix.additional-maven-args }}
+
       - name: Archive JUnit Report
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}
-          path: my-project-ci/target/reports
+          path: my-project-ci/target/site
