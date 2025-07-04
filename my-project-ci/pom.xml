@@ -16,6 +16,7 @@
   </properties>
 
   <build>
+    <!-- PluginManagement is optional here, only needed if you're controlling plugin versions globally -->
     <pluginManagement>
       <plugins>
         <plugin>
@@ -24,6 +25,15 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <!-- This is what actually activates the plugin -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.5.2</version>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
