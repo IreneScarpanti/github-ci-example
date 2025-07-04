@@ -16,27 +16,54 @@
   </properties>
 
   <build>
-  <!-- Facoltativo: definizione globale della versione del plugin -->
-  <pluginManagement>
+    <!-- Facoltativo: definizione globale della versione dei plugin -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>3.5.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.12</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>prepare-agent</goal> <!-- Fase "initialize" -->
+                <goal>report</goal>         <!-- Fase "verify" -->
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <!-- Obbligatorio: attiva i plugin nel ciclo di build -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.5.2</version>
       </plugin>
     </plugins>
-  </pluginManagement>
+  </build>
 
-  <!-- Obbligatorio: attiva il plugin nel ciclo di build -->
-  <plugins>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-surefire-report-plugin</artifactId>
-      <!-- Versione facoltativa qui se già specificata sopra -->
-    </plugin>
-  </plugins>
-</build>
-
+  <profiles>
+    <profile>
+      <id>jacoco</id>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- Configurato in pluginManagement -->
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <dependencies>
     <dependency>
