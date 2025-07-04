@@ -37,8 +37,11 @@ jobs:
         run: mvn -f my-project-ci/pom.xml surefire-report:report-only
         if: ${{ always() }}
 
+      - name: List files in target folder
+        run: ls -R my-project-ci/target
+
       - name: Archive JUnit Report
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}
-          path: my-project-ci/target/reports/surefire-report.html
+          path: my-project-ci/target/reports/**
