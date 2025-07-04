@@ -7,14 +7,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      workdir: my-project-ci
 
     strategy:
       matrix:
         include:
           - java: 17
-            additional-maven-args: "-Pjacoco coveralls:report"
+            additional-maven-args: "-Pcoveralls"
           - java: 21
-            additional-maven-args: "-Pjacoco coveralls:report"
+            additional-maven-args: "-Pcoveralls"
 
     name: Build with Java ${{ matrix.java }} on Linux
 
@@ -35,16 +37,19 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
 
       - name: Build with Maven
-        run: mvn -f my-project-ci/pom.xml clean verify ${{ matrix.additional-maven-args }}
+        run: mvn verify ${{ matrix.additional-maven-args }}
+        working-directory: ${{ env.workdir }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
 
       - name: Generate JUnit Report
-        run: mvn -f my-project-ci/pom.xml surefire-report:report-only
+        run: mvn surefire-report:report-only
+        working-directory: ${{ env.workdir }}
         if: ${{ always() }}
 
       - name: Jacoco
-        run: mvn -f my-project-ci/pom.xml clean verify ${{ matrix.additional-maven-args }}
+        run: mvn verify ${{ matrix.additional-maven-args }}
+        working-directory: ${{ env.workdir }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
 
