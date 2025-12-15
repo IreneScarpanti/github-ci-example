@@ -55,7 +55,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
 
       - name: Archive JUnit Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: surefire-report-jdk-${{ matrix.java }}
           path: my-project-ci/target/site
